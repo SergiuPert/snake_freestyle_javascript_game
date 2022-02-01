@@ -5,8 +5,9 @@ body {
     align-items: center;
 }
 
-.overlap_div{
+#overlap_div{
     position: absolute;
+    display: block;
     top: 0;
     left: 0;
     right: 0;
@@ -70,4 +71,8 @@ body {
     position: relative;
     display: block;
     margin-bottom: 40px;
+}
+
+.card-container{
+
 }
