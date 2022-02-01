@@ -8,12 +8,17 @@ let tileSize = canvas.width/tileCount;
 let headX = 10;
 let headY = 10;
 let directionX = 0;
-let directionY = 0;
+let directionY =0;
+let score = 0;
+
+// function insertHighscore(score) {
+//     let response = apiPost("/APIgethighscore", score)
+// }
+
 let appleX = 5;
 let appleY = 5;
 const snakeParts = [];
 let tailSize = 2;
-let score = 0;
 
 class SnakePart{
     constructor(x, y) {
