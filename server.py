@@ -16,9 +16,15 @@ def main_page():
 def login_page():
     return
 
+@app.route("/highscores")
+def highscore_page():
+    users = database_manager.get_highscore()
+    return render_template('highscore.html', users=users)
+
+
 @app.route("/APIgethighscore")
 @json_response
-def highscore_page():
+def api_get_highscore():
     highscore = database_manager.get_highscore()
     return highscore
 

@@ -1,3 +1,42 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Javascript Game</title>
+    <meta charset="UTF-8">
+    <!-- http://proger.i-forge.net/The_smallest_transparent_pixel/ -->
+    <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
+    <link rel="stylesheet" href="/static/style/style.css">
+    <script src="/static/script/navigation.js"></script>
+</head>
+<body>
+    <div id="overlap_div" onload="hideOverlapContent()" onclick="hideOverlapContent()"></div>
+    <header>
+        {% include 'navigation_bar.html' %}
+    </header>
+    <div>
+        <table>
+        <thead>
+            <tr>
+                <th>USERNAME</th>
+                <th> HIGHSCORE</th>
+            </tr>
+        </thead>
+            <tbody>
+            {% for user in users  %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.highscore }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include 'highscore.html' %}
+</body>
+</html>
+
+
+
 <div>
     <table>
     <thead>
