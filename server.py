@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from utils.json_response import json_response
+from json_response import json_response
 
 import database_manager
 
