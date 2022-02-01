@@ -1,6 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template
+from utils.json_response import json_response
 
-import cryptography
 import database_manager
 
 app = Flask(__name__)
@@ -10,6 +10,17 @@ app.secret_key = b'_5#87x"F4Qdu\n\xec]/'
 @app.route("/")
 def main_page():
     return render_template('index.html')
+
+
+@app.route("/")
+def login_page():
+    return
+
+@app.route("/APIgethighscore")
+@json_response
+def highscore_page():
+    highscore = database_manager.get_highscore()
+    return highscore
 
 
 if __name__ == "__main__":
