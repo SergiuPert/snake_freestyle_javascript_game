@@ -1,4 +1,4 @@
-import {apiPost} from "./APIs";
+// import {apiPost} from "./APIs";
 
 const canvas = document.getElementById("game-screen");
 const ctx = canvas.getContext('2d');
@@ -11,9 +11,9 @@ let directionX = 0;
 let directionY =0;
 let score = 0;
 
-function insertHighscore(score) {
-    let response = apiPost("/APIgethighscore", score)
-}
+// function insertHighscore(score) {
+//     let response = apiPost("/APIgethighscore", score)
+// }
 
 
 function keydown(event) {
