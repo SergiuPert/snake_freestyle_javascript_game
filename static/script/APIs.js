@@ -8,6 +8,7 @@ export async function apiGet(url) {
     }
 }
 
+
 export async function apiPost(url, payload) {
     let response = await fetch(url, {
         method: "POST",
@@ -22,6 +23,7 @@ export async function apiPost(url, payload) {
     }
 }
 
+
 export async function apiDelete(url, payload) {
     let response = await fetch(url, {
         method: "DELETE",
@@ -35,6 +37,7 @@ export async function apiDelete(url, payload) {
         return data
     }
 }
+
 
 export async function apiPut(url, payload) {
     let response = await fetch(url, {

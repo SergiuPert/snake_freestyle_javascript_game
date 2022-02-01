@@ -1,4 +1,4 @@
-
+import {apiPost} from "./APIs";
 
 const canvas = document.getElementById("game-screen");
 const ctx = canvas.getContext('2d');
@@ -9,6 +9,12 @@ let headX = 0;
 let headY = 0;
 let directionX = 0;
 let directionY =0;
+let score = 0;
+
+function insert_highscore(score) {
+    let response = apiPost("/APIgethighscore", score)
+}
+
 
 function keydown(event) {
     if (event.keyCode === 87 && directionY !== 1) {
