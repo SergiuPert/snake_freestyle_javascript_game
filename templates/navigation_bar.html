@@ -1,0 +1,19 @@
+<nav class="navigation-bar">
+    <div class="navigation-main-div">
+        {% if not username %}
+            <a class="navigation-button login-button">
+                Login
+            </a>
+        {% else %}
+            <a class="navigation-button login-button">
+                {{ username }}
+            </a>
+        {% endif %}
+
+
+        <a class="navigation-button">
+            Home
+        </a>
+
+    </div>
+</nav>
