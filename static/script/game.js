@@ -11,16 +11,16 @@ let directionX = 0;
 let directionY =0;
 
 function keydown(event) {
-    if (event.keyCode == 87) {
+    if (event.keyCode === 87 && directionY !== 1) {
         directionY = -1;
         directionX = 0;
-    } else if (event.keyCode == 83) {
+    } else if (event.keyCode === 83 && directionY !== -1) {
         directionY = 1;
         directionX = 0;
-    } else if (event.keyCode == 68) {
+    } else if (event.keyCode === 68 && directionX !== -1) {
         directionY = 0;
         directionX = 1;
-    } else if (event.keyCode == 65) {
+    } else if (event.keyCode === 65 && directionX !== 1) {
         directionY = 0;
         directionX = -1;
     }
@@ -44,12 +44,13 @@ function drawSnake () {
 }
 
 
+
+
 function initGame() {
     console.log("aaaa")
     clear_screen();
     drawSnake();
     move_snake();
-    // Your game can start here, but define separate functions, don't write everything in here :)
     setTimeout(initGame, 1000/speed);
 }
 
