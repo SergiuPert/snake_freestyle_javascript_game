@@ -58,6 +58,7 @@ function keydown(event) {
     } else if (event.keyCode === 32) {
         directionX = 0;
         directionY = 0;
+        document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 27) {
         let overlapDiv = document.getElementById("overlap_div");
         overlapDiv.style.visibility="hidden";
