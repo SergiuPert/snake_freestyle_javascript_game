@@ -16,6 +16,7 @@ def main_page():
 def login_page():
     return
 
+
 @app.route("/highscores")
 def highscore_page():
     users = database_manager.get_highscore()
