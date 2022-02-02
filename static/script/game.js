@@ -87,7 +87,9 @@ function apple_collision() {
         score++;
     }
     for (let index = 0; index < snakeParts.length; index++) {
-        /// apple not in snake!!!
+        if ({x:appleX, y:appleY} == snakeParts[index]) {
+            console.log("FUUUUUUUUUU");
+        }
     }
 }
 
