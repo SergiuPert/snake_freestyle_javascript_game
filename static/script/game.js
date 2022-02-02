@@ -1,3 +1,4 @@
+import {apiPost} from "./APIs.js";
 
 
 const canvas = document.getElementById("game-screen");
@@ -11,9 +12,9 @@ let directionX = 0;
 let directionY =0;
 let score = 0;
 
-// function insertHighscore(score) {
-//     let response = apiPost("/APIgethighscore", score)
-// }
+function insertHighscore(score) {
+    let response = apiPost("/APIgethighscore", score)
+}
 
 let appleX = 5;
 let appleY = 5;

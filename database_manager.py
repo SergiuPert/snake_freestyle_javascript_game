@@ -19,3 +19,7 @@ def insert_user(cursor, username, password):
                     VALUES(%(username)s, %(password)s)
             ;"""
     cursor.execute(query, {"username": username, "password": password})
+
+
+def insert_highscore(json):
+    return None
