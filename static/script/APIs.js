@@ -19,6 +19,7 @@ export async function apiPost(url, payload) {
     })
     if (response.ok) {
         let data = response.json()
+        // console.log(data)
         return data
     }
 }

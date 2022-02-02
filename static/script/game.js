@@ -1,4 +1,4 @@
-import {apiPost} from "./APIs.js";
+import {apiGet, apiPost, apiPut} from "./APIs.js";
 
 
 const canvas = document.getElementById("game-screen");
@@ -11,9 +11,19 @@ let headY = 10;
 let directionX = 0;
 let directionY =0;
 let score = 0;
+let username = apiGet("/API-get-active-user");
+console.log(username.username)
 
+let insertHighscoreButton = document.getElementById("insert_highscore")
+insertHighscoreButton.addEventListener('click', ev => insertHighscore({"username":"asdf","highscore":350}))
 function insertHighscore(score) {
-    let response = apiPost("/APIgethighscore", score)
+    let new_score = {"highscore": score, "username": "asdf"}
+    console.log(new_score)
+    let response = apiPut("/API-insert-highscore", score);
+    console.log(response);
+    let overlapDiv = document.getElementById("overlap_div");
+    overlapDiv.innerText = "Game Over"
+    overlapDiv.style.visibility = "visible"
 }
 
 let appleX = 5;
@@ -45,6 +55,10 @@ function keydown(event) {
     } else if (event.keyCode === 32) {
         directionX = 0;
         directionY = 0;
+    } else if (event.keyCode === 27) {
+        let overlapDiv = document.getElementById("overlap_div");
+        overlapDiv.style.visibility="hidden";
+        overlapDiv.innerHTML = "";
     }
     console.log(snakeParts);
 }
