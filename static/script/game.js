@@ -1,6 +1,5 @@
 import {apiGet, apiPost, apiPut} from "./APIs.js";
 
-
 const canvas = document.getElementById("game-screen");
 const ctx = canvas.getContext('2d');
 let speed = 3;
@@ -43,15 +42,19 @@ function keydown(event) {
     if (event.keyCode === 87 && directionY !== 1) {
         directionY = -1;
         directionX = 0;
+        document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 83 && directionY !== -1) {
         directionY = 1;
         directionX = 0;
+        document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 68 && directionX !== -1) {
         directionY = 0;
         directionX = 1;
+        document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 65 && directionX !== 1) {
         directionY = 0;
         directionX = -1;
+        document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 32) {
         directionX = 0;
         directionY = 0;
@@ -59,8 +62,9 @@ function keydown(event) {
         let overlapDiv = document.getElementById("overlap_div");
         overlapDiv.style.visibility="hidden";
         overlapDiv.innerHTML = "";
+        document.removeEventListener('keydown', keydown);
     }
-    console.log(snakeParts);
+
 }
 
 function move_snake() {
@@ -93,30 +97,59 @@ function spawn_apple() {
 }
 
 function apple_collision() {
+    for (let index = 0; index < snakeParts.length; index++) {
+        let part = snakeParts[index]
+        if (part.x === appleX && part.y === appleY) {
+            appleX = Math.floor(Math.random() * tileCount);
+            appleY = Math.floor(Math.random() * tileCount);
+
+        }
+    }
     if (appleX === headX && appleY === headY) {
-        // appleX = Math.floor(Math.random() * tileCount);
-        // appleY = Math.floor(Math.random() * tileCount);
-        appleX = 10;
-        appleY = 10;
+        appleX = Math.floor(Math.random() * tileCount);
+        appleY = Math.floor(Math.random() * tileCount);
         tailSize++;
         score++;
-    }
-    for (let index = 0; index < snakeParts.length; index++) {
-        if ({x:appleX, y:appleY} == snakeParts[index]) {
-            console.log("FUUUUUUUUUU");
-        }
+        speed = 3 * (1 + score/5);
+        console.log(speed);
     }
 }
 
 function draw_score() {
     ctx.fillStyle = '#ffffff';
     ctx.font = "20px Impact, sans serif";
-    ctx.fillText("Score " + score, canvas.width - 90, 20);
+    ctx.fillText("Score " + score, canvas.width - 80, 20);
 }
 
+function isGameOver() {
+    let gameOver = false;
+    if (directionX === 0 && directionY === 0) {
+        return false;
+    }
+    for (let index = 0; index <snakeParts.length; index++) {
+        let part = snakeParts[index];
+        if (part.x === headX && part.y === headY) {
+            gameOver = true;
+            break;
+        }
+    }
+    if (headX < 0 || headX === tileCount || headY < 0 || headY === tileCount) {
+        gameOver = true;
+    }
+    return gameOver;
+}
+
+
 function initGame() {
-    clear_screen();
+    document.addEventListener('keydown', keydown);
     move_snake();
+    if (isGameOver()) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = "60px Impact, sans serif";
+        ctx.fillText("Game Over!", canvas.width/6, canvas.height/2);
+        return;
+    }
+    clear_screen();
     apple_collision();
     spawn_apple();
     drawSnake();
@@ -124,6 +157,6 @@ function initGame() {
     setTimeout(initGame, 1000/speed);
 }
 
-document.addEventListener('keydown', keydown);
+
 
 initGame();
