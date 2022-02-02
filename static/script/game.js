@@ -10,19 +10,15 @@ let headY = 10;
 let directionX = 0;
 let directionY =0;
 let score = 0;
-let username = apiGet("/API-get-active-user");
-console.log(username.username)
+let username;
+apiGet("/API-get-active-user")
+    .then(result => {username= result.username});
 
 let insertHighscoreButton = document.getElementById("insert_highscore")
-insertHighscoreButton.addEventListener('click', ev => insertHighscore({"username":"asdf","highscore":350}))
+insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
 function insertHighscore(score) {
-    let new_score = {"highscore": score, "username": "asdf"}
-    console.log(new_score)
-    let response = apiPut("/API-insert-highscore", score);
-    console.log(response);
-    let overlapDiv = document.getElementById("overlap_div");
-    overlapDiv.innerText = "Game Over"
-    overlapDiv.style.visibility = "visible"
+    let new_score = {"highscore": score, "username": username}
+    apiPut("/API-insert-highscore", new_score).then(r => console.log("Highscore changed!"));
 }
 
 let appleX = 5;
