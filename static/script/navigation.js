@@ -29,7 +29,6 @@ const overlapHighscore = async (e) => {
         "        <tbody>\n";
     let highscore_page_table_inputs = "";
     for (let highscore of highscores) {
-        console.log(highscore);
         highscore_page_table_inputs +=
             "            <tr>\n" +
             `                <td>${highscore.username}</td>\n` +
@@ -70,7 +69,6 @@ async function initiate_page() {
             await apiGet("/API-logout").then((result)=>{
                response = result
             })
-            console.log(response)
             navigation_bar.removeChild(document.getElementById("user-button"));
             navigation_bar.removeChild(document.getElementById("logout-button"));
             await initiate_page()

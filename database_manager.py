@@ -24,6 +24,17 @@ def get_highscore(cursor):
 
 
 @database_connection.connection_handler
+def get_user_highscore(cursor, username):
+    query = """
+        SELECT highscore
+        FROM users
+        WHERE username = %(username)s
+        ;"""
+    cursor.execute(query, {"username": username})
+    return cursor.fetchone()
+
+
+@database_connection.connection_handler
 def insert_user(cursor, username, password):
     query = """
                     INSERT INTO users(username, password)

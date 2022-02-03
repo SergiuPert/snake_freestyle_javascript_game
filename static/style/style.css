@@ -171,3 +171,8 @@ td {
     box-shadow: 0 0 7px 5px white;
 }
 
+#user-button{
+    text-wrap: normal;
+    font-size: 13px;
+}
+
