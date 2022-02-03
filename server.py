@@ -1,6 +1,9 @@
 from flask import Flask,request, render_template
 from json_response import json_response
 
+import mimetypes
+mimetypes.add_type('application/javascript', '.js')
+
 import database_manager
 
 app = Flask(__name__)
