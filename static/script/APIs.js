@@ -1,4 +1,4 @@
-export async function apiGet(url) {
+async function apiGet(url) {
     let response = await fetch(url);
     if (response.ok) {
         let data = await response.json();
@@ -6,7 +6,7 @@ export async function apiGet(url) {
     }
 }
 
-export async function apiPost(url, payload) {
+async function apiPost(url, payload) {
     let response = await fetch(url, {
         method: "POST",
         headers: {
@@ -21,7 +21,7 @@ export async function apiPost(url, payload) {
     }
 }
 
-export async function apiDelete(url, payload) {
+async function apiDelete(url, payload) {
     let response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -35,7 +35,7 @@ export async function apiDelete(url, payload) {
     }
 }
 
-export async function apiPut(url, payload) {
+async function apiPut(url, payload) {
     let response = await fetch(url, {
         method: "PUT",
         headers: {

@@ -12,9 +12,15 @@
             rel="stylesheet"
             href="{{ url_for('static', filename='style/style.css') }}"
         />
-        <script type="module" src="{{ url_for('static', filename='script/navigation.js') }}"></script>
         <script
-            type="module"
+            src="{{ url_for('static', filename='script/APIs.js') }}"
+            defer
+        ></script>
+        <script
+            src="{{ url_for('static', filename='script/navigation.js') }}"
+            defer
+        ></script>
+        <script
             src="{{ url_for('static',filename='script/game.js') }}"
             defer
         ></script>
@@ -42,7 +48,7 @@
                     >
                         Home
                     </a>
-                    <a id="overlap_highscore" class="navigation-button">
+                    <a id="overlap-highscore" class="navigation-button">
                         Highscore
                     </a>
                 </div>

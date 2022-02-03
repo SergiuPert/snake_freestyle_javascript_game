@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "./APIs.js";
+// import { apiGet, apiPost } from "./APIs.js";
 
 let overlapDiv = document.getElementById("overlap_div");
 async function hideOverlapContent() {
@@ -11,10 +11,9 @@ window.onload = function () {
     hideOverlapContent().then((r) => "hidden");
 };
 
-async function overlap_highscore(e) {
-    console.log(1);
+const overlapHighscore = async (e) => {
     e.preventDefault();
-    console.log(e);
+
     let overlapDiv = document.getElementById("overlap_div");
     overlapDiv.style.visibility = "visible";
     let highscores = await apiGet("/APIgethighscore");
@@ -44,11 +43,7 @@ async function overlap_highscore(e) {
         "</div>";
 
     overlapDiv.innerHTML = highscore_page;
-}
-
-document
-    .getElementById("overlap_highscore")
-    .addEventListener("click", overlap_highscore);
+};
 
 async function initiate_page() {
     let username;
@@ -113,10 +108,13 @@ async function initiate_page() {
                     });
             });
         // REGISTER PAGE
-        document.getElementById("register-button").addEventListener('click',ev => {
-            document.getElementById("overlap_div").removeEventListener('click',hideOverlapContent)
-            overlapDiv.innerHTML =
-                `<div class="card-container">
+        document
+            .getElementById("register-button")
+            .addEventListener("click", (ev) => {
+                document
+                    .getElementById("overlap_div")
+                    .removeEventListener("click", hideOverlapContent);
+                overlapDiv.innerHTML = `<div class="card-container">
                     <div class="login-card">
 
                         <input type="text" autocomplete="off" placeholder="Username" id="username_textarea" name="username_textarea"><br>
@@ -129,30 +127,45 @@ async function initiate_page() {
                         <button id="register-page-button">REGISTER</button>
                     </div>
                 </div>`;
-               overlapDiv.style.visibility = 'visible';
-                document.getElementById("register-page-button").addEventListener('click',ev => {
-                    let username_textarea = document.getElementById("username_textarea").value;
-                    let password = document.getElementById("password").value;
-                    let confirm_password = document.getElementById("confirm-password").value;
-                    console.log(`Username ${username_textarea} Password: ${password} Confirm password: ${confirm_password}`)
-                    if (password === confirm_password) {
-                        apiPost('/API-register',
-                            {
-                                "username": username_textarea,
-                                "password": password
-                            })
-                        navigation_bar.removeChild(document.getElementById("login-button"))
-                        navigation_bar.removeChild(document.getElementById("register-button"))
-                        initiate_page()
-                    }else {
-                        document.getElementById("error_message").innerText = "Passwords does not match"
-                        document.getElementById("error_message").style.color = 'red'
-                    }
-                })
-        });
+                overlapDiv.style.visibility = "visible";
+                document
+                    .getElementById("register-page-button")
+                    .addEventListener("click", (ev) => {
+                        let username_textarea =
+                            document.getElementById("username_textarea").value;
+                        let password =
+                            document.getElementById("password").value;
+                        let confirm_password =
+                            document.getElementById("confirm-password").value;
+                        console.log(
+                            `Username ${username_textarea} Password: ${password} Confirm password: ${confirm_password}`
+                        );
+                        if (password === confirm_password) {
+                            apiPost("/API-register", {
+                                username: username_textarea,
+                                password: password,
+                            });
+                            navigation_bar.removeChild(
+                                document.getElementById("login-button")
+                            );
+                            navigation_bar.removeChild(
+                                document.getElementById("register-button")
+                            );
+                            initiate_page();
+                        } else {
+                            document.getElementById("error_message").innerText =
+                                "Passwords does not match";
+                            document.getElementById(
+                                "error_message"
+                            ).style.color = "red";
+                        }
+                    });
+            });
+    }
 
-    }}
+    document
+        .querySelector("#overlap-highscore")
+        .addEventListener("click", overlapHighscore);
+}
 
-
-
-await initiate_page()
+initiate_page();

@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut } from "./APIs.js";
+// import { apiGet, apiPost, apiPut } from "./APIs.js";
 
 const canvas = document.getElementById("game-screen");
 const ctx = canvas.getContext("2d");
@@ -175,5 +175,5 @@ async function initGame() {
     setTimeout(initGame, 1000 / speed);
 }
 
-await initiate_user();
-await initGame();
+initiate_user();
+initGame();
