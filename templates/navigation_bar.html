@@ -1,6 +1,6 @@
 <script type="module" src="{{ url_for('static',filename='script/navigation.js') }}"></script>
 <script type="module" src="{{ url_for('static',filename='script/game.js') }}"></script>
-<nav class="navigation-bar">
+<nav id="navigation_bar" class="navigation-bar">
     <div class="navigation-main-div">
         {% if not username %}
             <a class="navigation-button login-button">

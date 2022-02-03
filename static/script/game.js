@@ -11,19 +11,30 @@ let directionX = 0;
 let directionY =0;
 let score = 0;
 let username;
-apiGet("/API-get-active-user")
-    .then(result => {username= result.username});
 
-let insertHighscoreButton = document.getElementById("insert_highscore")
-insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
-function insertHighscore(score) {
+async function initiate_user() {
+    await apiGet("/API-get-active-user")
+            .then(result => {
+                username = result.username;
+            });
+
+}
+
+// export function activate_keydown(){
+//     document.addEventListener('keydown',ev => keydown(ev))
+// }
+
+
+// let insertHighscoreButton = document.getElementById("insert_highscore")
+// insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
+function insertHighscore() {
     let new_score = {"highscore": score, "username": username}
     apiPut("/API-insert-highscore", new_score).then(r => console.log("Highscore changed!"));
 }
 
 let appleX = 5;
 let appleY = 5;
-const snakeParts = [];
+let snakeParts = [];
 let tailSize = 2;
 
 class SnakePart{
@@ -34,7 +45,7 @@ class SnakePart{
 }
 
 
-function keydown(event) {
+async function keydown(event) {
     if (event.keyCode === 87 && directionY !== 1) {
         directionY = -1;
         directionX = 0;
@@ -60,6 +71,17 @@ function keydown(event) {
         overlapDiv.style.visibility="hidden";
         overlapDiv.innerHTML = "";
         document.removeEventListener('keydown', keydown);
+        await initGame()
+    } else if(event.keyCode === 82) {
+        appleX = 5;
+        appleY = 5;
+        snakeParts = [];
+        tailSize = 2;
+        headX = 10;
+        headY = 10;
+        directionX = 0;
+        directionY = 0;
+        score = 0;
     }
 
 }
@@ -137,23 +159,23 @@ function isGameOver() {
 }
 
 
-function initGame() {
-    document.addEventListener('keydown', keydown);
-    move_snake();
-    if (isGameOver()) {
-        ctx.fillStyle = '#ffffff';
-        ctx.font = "60px Impact, sans serif";
-        ctx.fillText("Game Over!", canvas.width/6, canvas.height/2);
-        return;
-    }
-    clear_screen();
-    apple_collision();
-    spawn_apple();
-    drawSnake();
-    draw_score();
-    setTimeout(initGame, 1000/speed);
+async function initGame() {
+        document.addEventListener('keydown', keydown);
+        await move_snake();
+        if (isGameOver()) {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = "60px Impact, sans serif";
+            ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
+            return;
+        }
+        clear_screen();
+        apple_collision();
+        spawn_apple();
+        drawSnake();
+        draw_score();
+        setTimeout(initGame, 1000 / speed);
+
 }
 
-
-
-initGame();
+await initiate_user()
+await initGame();
