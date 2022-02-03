@@ -34,16 +34,28 @@ def login_page():
     user = database_manager.get_user_by_username(json_var["username"])
     if cryptography.verify_password(json_var["password"], user["password"]):
         session.update({"username": user["username"]})
+        return True
+    return False
+
+
+@app.route("/API-logout", methods=["GET"])
+def logout():
+    session.pop("username")
+    return {"result": True}
 
 
 @app.route("/API-register", methods=["POST"])
 @json_response
 def register_page():
     json_var = request.json
-    database_manager.insert_user(
-        json_var["username"], cryptography.hash_password(json_var["password"])
-    )
-    session.update({"username": json_var["username"]})
+    if not database_manager.get_user_by_username(json_var["username"]):
+        database_manager.insert_user(
+            json_var["username"], cryptography.hash_password(json_var["password"])
+        )
+        session.update({"username": json_var["username"]})
+        return True
+    else:
+        return False
 
 
 @app.route("/API-get-active-user")

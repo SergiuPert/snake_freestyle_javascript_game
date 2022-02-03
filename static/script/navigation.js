@@ -61,9 +61,21 @@ async function initiate_page() {
 
     if (username !== "") {
         navigation_bar.innerHTML =
-            `<a class="navigation-button login-button">
+            `<a id="user-button" class="navigation-button">
                 ${username}
-            </a>` + navigation_bar.innerHTML;
+            </a>
+            <a id="logout-button" class="navigation-button login-button">LOGOUT</a>` + navigation_bar.innerHTML;
+        document.getElementById("logout-button").addEventListener('click',async ev => {
+            let response;
+            await apiGet("/API-logout").then((result)=>{
+               response = result
+            })
+            console.log(response)
+            navigation_bar.removeChild(document.getElementById("user-button"));
+            navigation_bar.removeChild(document.getElementById("logout-button"));
+            await initiate_page()
+        })
+
     } else {
         navigation_bar.innerHTML =
             `<a id="login-button" class="navigation-button">
@@ -92,7 +104,7 @@ async function initiate_page() {
                 // LOGIN PAGE
                 document
                     .getElementById("login-page-button")
-                    .addEventListener("click", (ev) => {
+                    .addEventListener("click", async (ev) => {
                         let username_textarea =
                             document.getElementById("username_textarea").value;
                         let password =
@@ -101,10 +113,29 @@ async function initiate_page() {
                             `Username ${username_textarea} Password: ${password}`
                         );
 
-                        apiPost("/API-login", {
-                            username: username_textarea,
-                            password: password,
+                        let response;
+                        await apiPost("/API-login", {
+                            "username": username_textarea,
+                            "password": password,
+                        }).then((result) => {
+                            response = result
                         });
+                        if (response !== false) {
+                            navigation_bar.removeChild(
+                                document.getElementById("login-button")
+                            );
+                            navigation_bar.removeChild(
+                                document.getElementById("register-button")
+                            );
+                            await hideOverlapContent()
+                            await initiate_page()
+                        } else {
+                            document.getElementById("error_message").innerText = "Invalid credentials!"
+                            document.getElementById("error_message").style.color = 'red'
+
+
+
+                        }
                     });
             });
         // REGISTER PAGE
@@ -130,28 +161,38 @@ async function initiate_page() {
                 overlapDiv.style.visibility = "visible";
                 document
                     .getElementById("register-page-button")
-                    .addEventListener("click", (ev) => {
+                    .addEventListener("click", async (ev) => {
                         let username_textarea =
                             document.getElementById("username_textarea").value;
                         let password =
                             document.getElementById("password").value;
                         let confirm_password =
                             document.getElementById("confirm-password").value;
-                        console.log(
-                            `Username ${username_textarea} Password: ${password} Confirm password: ${confirm_password}`
-                        );
                         if (password === confirm_password) {
-                            apiPost("/API-register", {
+                            let response;
+                            await apiPost("/API-register", {
                                 username: username_textarea,
                                 password: password,
+                            }).then((result) => {
+                                response = result
                             });
-                            navigation_bar.removeChild(
+                            if (response === false) {
+                                document.getElementById("error_message").innerText =
+                                    "User already exists!";
+                                document.getElementById(
+                                    "error_message"
+                                ).style.color = "red";
+                            }else{
+                                navigation_bar.removeChild(
                                 document.getElementById("login-button")
                             );
                             navigation_bar.removeChild(
                                 document.getElementById("register-button")
                             );
-                            initiate_page();
+                            await hideOverlapContent()
+                            await initiate_page();
+                            }
+
                         } else {
                             document.getElementById("error_message").innerText =
                                 "Passwords does not match";
