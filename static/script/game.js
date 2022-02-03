@@ -140,7 +140,7 @@ function draw_score() {
     ctx.fillText("Score " + score, canvas.width - 80, 20);
 }
 
-function isGameOver() {
+async function isGameOver() {
     let gameOver = false;
     if (directionX === 0 && directionY === 0) {
         return false;
@@ -154,6 +154,19 @@ function isGameOver() {
     }
     if (headX < 0 || headX === tileCount || headY < 0 || headY === tileCount) {
         gameOver = true;
+        if (username !== "") {
+            let response
+            await apiGet("/API-get-active-user-highscore")
+                .then((result) => {
+                    response = result.highscore
+                })
+            if (parseInt(response) < score) {
+                await apiPut("/API-insert-highscore", {"username": username, "highscore": score})
+                    .then((result) => {
+                        let response = result
+                    })
+            }
+        }
     }
     return gameOver;
 }
@@ -161,21 +174,11 @@ function isGameOver() {
 async function initGame() {
     document.addEventListener("keydown", keydown);
     await move_snake();
-    if (isGameOver()) {
+    if (await isGameOver()) {
         ctx.fillStyle = "#ffffff";
         ctx.font = "60px Impact, sans serif";
         ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
-        if(username !== "")
-        {
-            await apiGet("/API-get-active-user-highscore")
-                .then((result) => { let response = result.highscore})
-            if(response > score) {
-                await apiPut("/API-insert-highscore", {"username": username, "highscore": score})
-                    .then((result) => {
-                        let response = result
-                    })
-            }
-        }
+
         return;
     }
     clear_screen();
