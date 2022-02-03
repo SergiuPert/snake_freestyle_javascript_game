@@ -79,11 +79,12 @@ async function initiate_page() {
             overlapDiv.innerHTML =
                 `<div class="card-container">
                     <div class="login-card">
-                        <h3 id="error_message"></h3>
-                        <label for="username_textarea">Username:</label>
-                        <input type="text" placeholder="Username" id="username_textarea" name="username_textarea">
-                        <label for="password">Password:</label>
+                        
+                        <input type="text" autocomplete="off" placeholder="Username" id="username_textarea" name="username_textarea"><br>
                         <input type="password" placeholder="Password" id="password" name="password">
+                        <h3 id="error_message"></h3>
+                    </div>
+                    <div class="login-button-div">
                         <button id="login-page-button">LOGIN</button>
                     </div>
                 </div>`;
@@ -93,11 +94,20 @@ async function initiate_page() {
                 let password = document.getElementById("password").value;
                 console.log(`Username ${username_textarea} Password: ${password}`)
 
-                apiPost('/API-login',
-                    {
-                        "username": username_textarea,
-                        "password": password
-                    })
+                if(username !== '' && password !== ''){
+                    apiPost('/API-login',
+                        {
+                            "username": username_textarea,
+                            "password": password
+                        })
+                    navigation_bar.removeChild(document.getElementById("login-button"))
+                    navigation_bar.removeChild(document.getElementById("register-button"))
+                    initiate_page()
+                }else{
+                    document.getElementById("error_message").innerText = "Invalid input!"
+                    document.getElementById("error_message").style.color = 'red'
+                }
+
             })
         })
         document.getElementById("register-button").addEventListener('click',ev => {
@@ -105,13 +115,14 @@ async function initiate_page() {
             overlapDiv.innerHTML =
                 `<div class="card-container">
                     <div class="login-card">
+                        
+                        <input type="text" autocomplete="off" placeholder="Username" id="username_textarea" name="username_textarea"><br>
+                        <input type="password" placeholder="Password" id="password" name="password"><br>
+                        <input type="password" placeholder="Confirm password" id="confirm-password" name="confirm-password"><br>
                         <h3 id="error_message"></h3>
-                        <label for="username_textarea">Username:</label>
-                        <input type="text" placeholder="Username" id="username_textarea" name="username_textarea">
-                        <label for="password">Password:</label>
-                        <input type="password" placeholder="Password" id="password" name="password">
-                        <label for="confirm-password">Password:</label>
-                        <input type="password" placeholder="Confirm password" id="confirm-password" name="confirm-password">
+                        
+                    </div>
+                    <div class="register-button-div">
                         <button id="register-page-button">REGISTER</button>
                     </div>
                 </div>`;
@@ -121,12 +132,14 @@ async function initiate_page() {
                 let password = document.getElementById("password").value;
                 let confirm_password = document.getElementById("confirm-password").value;
                 console.log(`Username ${username_textarea} Password: ${password} Confirm password: ${confirm_password}`)
-                if (password !== confirm_password) {
+                if (password === confirm_password) {
                     apiPost('/API-register',
                         {
                             "username": username_textarea,
                             "password": password
                         })
+                    navigation_bar.removeChild(document.getElementById("login-button"))
+                    navigation_bar.removeChild(document.getElementById("register-button"))
                     initiate_page()
                 }else {
                     document.getElementById("error_message").innerText = "Passwords does not match"

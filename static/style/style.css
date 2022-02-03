@@ -3,6 +3,15 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #3dc21b;
+}
+
+canvas {
+    margin-top: 50px;
+    border: solid black 3px;
+    box-shadow: 0 0 10px 2px black;
+
+    /*box-shadow: -10px -10px 8px black;*/
 }
 
 #overlap_div{
@@ -97,11 +106,68 @@ body {
 }
 
 .card-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-top: 200px;
+    max-height: 300px;
 }
 
 .login-card{
-    display: flex;
+    display: block;
     flex-direction: column;
     justify-content: center;
+    align-content: center;
+    text-align: center;
+    color: white;
 }
+
+.login-card input{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.login-card input:focus{
+    font-size: 22px;
+}
+
+.login-button-div{
+    display: inline-block;
+}
+
+.login-button-div button{
+    background-color: black;
+    color: white;
+    position: relative;
+    height: 60px;
+    width: 60px;
+    top: 10px;
+    max-width: 120px;
+    margin-left: 25%;
+    border-radius: 50px;
+}
+
+.login-button-div button:hover{
+    box-shadow: 0 0 7px 5px white;
+
+}
+
+.register-button-div button{
+    background-color: black;
+    color: white;
+    position: relative;
+    height: 60px;
+    width: 60px;
+    top: -5px;
+    max-width: 120px;
+    margin-left: 25%;
+    border-radius: 50px;
+    font-size: 9px;
+}
+
+.register-button-div button:hover{
+    box-shadow: 0 0 7px 5px white;
+}
+
