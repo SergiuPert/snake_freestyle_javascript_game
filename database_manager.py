@@ -21,5 +21,12 @@ def insert_user(cursor, username, password):
     cursor.execute(query, {"username": username, "password": password})
 
 
-def insert_highscore(json):
-    return None
+@database_connection.connection_handler
+def insert_highscore(cursor,user):
+    query = """
+                    UPDATE users
+                    SET highscore = %(highscore)s
+                    WHERE username = %(username)s
+                    
+            ;"""
+    cursor.execute(query, user)

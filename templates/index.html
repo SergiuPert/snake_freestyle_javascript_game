@@ -6,13 +6,39 @@
     <!-- http://proger.i-forge.net/The_smallest_transparent_pixel/ -->
     <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
     <link rel="stylesheet" href="/static/style/style.css">
+    <script type="module" src="/static/script/navigation.js"></script>
+    <script type="module" src="{{ url_for('static',filename='script/game.js') }}" defer></script>
     <script type="module" src="{{ url_for('static', filename='script/navigation.mjs')}}"></script>
     <script type="module" src="{{ url_for('static',filename='script/game.mjs') }}" defer></script>
 </head>
 <body>
-    <div id="overlap_div" onload="hideOverlapContent()" onclick="hideOverlapContent()"></div>
+    <div id="overlap_div" ></div>
     <header>
-        {% include 'navigation_bar.html' %}
+        <nav class="navigation-bar">
+            <div class="navigation-main-div">
+                {% if not username %}
+                    <a class="navigation-button login-button">
+                        Login
+                    </a>
+                {% else %}
+                    <a class="navigation-button login-button">
+                        {{ username }}
+                    </a>
+                {% endif %}
+
+
+                <a class="navigation-button" href="{{ url_for('main_page') }}">
+                    Home
+                </a>
+                <a id="overlap_highscore" class="navigation-button">
+                    Highscore
+                </a>
+                <a id="insert_highscore" class="navigation-button">
+                    Insert highscore
+                </a>
+
+            </div>
+        </nav>
     </header>
     <h1 class="tit">Snake</h1>
     <canvas class="game-screen" id="game-screen" width="400" height="400"></canvas>

@@ -1,4 +1,4 @@
-import {apiPost} from "./APIs.js";
+import {apiGet, apiPost, apiPut} from "./APIs.js";
 
 const canvas = document.getElementById("game-screen");
 const ctx = canvas.getContext('2d');
@@ -10,9 +10,15 @@ let headY = 10;
 let directionX = 0;
 let directionY =0;
 let score = 0;
+let username;
+apiGet("/API-get-active-user")
+    .then(result => {username= result.username});
 
+let insertHighscoreButton = document.getElementById("insert_highscore")
+insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
 function insertHighscore(score) {
-    let response = apiPost("/APIgethighscore", score)
+    let new_score = {"highscore": score, "username": username}
+    apiPut("/API-insert-highscore", new_score).then(r => console.log("Highscore changed!"));
 }
 
 let appleX = 5;
@@ -48,6 +54,11 @@ function keydown(event) {
     } else if (event.keyCode === 32) {
         directionX = 0;
         directionY = 0;
+        document.removeEventListener('keydown', keydown);
+    } else if (event.keyCode === 27) {
+        let overlapDiv = document.getElementById("overlap_div");
+        overlapDiv.style.visibility="hidden";
+        overlapDiv.innerHTML = "";
         document.removeEventListener('keydown', keydown);
     }
 
