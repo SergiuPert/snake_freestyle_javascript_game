@@ -1,10 +1,22 @@
 // import { apiGet, apiPost, apiPut } from "./APIs.js";
 
 const canvas = document.getElementById("game-screen");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext('2d');
+const eat = new Audio('./static/sound/yeeeBoi.mp3');
+const music = new Audio('./static/sound/TerrariaMusic-Jungle.mp3');
+music.volume = 0.1;
+const deathSound = new Audio('./static/sound/death.mp3');
+const grass = new Image();
+grass.src = './static/images/grass2.jpg';
+const snakeHead = new Image();
+snakeHead.src = './static/images/snake-head.png';
+const snakeBody = new Image();
+snakeBody.src = './static/images/snake-body.png';
+const bebe = new Image();
+bebe.src = './static/images/bebe.png';
 let speed = 3;
-let tileCount = 20;
-let tileSize = canvas.width / tileCount;
+let tileCount = 40;
+let tileSize = canvas.width/(tileCount/2);
 let headX = 10;
 let headY = 10;
 let directionX = 0;
@@ -58,11 +70,7 @@ async function keydown(event) {
     } else if (event.keyCode === 65 && directionX !== 1) {
         directionY = 0;
         directionX = -1;
-        document.removeEventListener("keydown", keydown);
-    } else if (event.keyCode === 32) {
-        directionX = 0;
-        directionY = 0;
-        document.removeEventListener("keydown", keydown);
+        document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 27) {
         let overlapDiv = document.getElementById("overlap_div");
         overlapDiv.style.visibility = "hidden";
@@ -88,48 +96,44 @@ function move_snake() {
 }
 
 function clear_screen() {
-    ctx.fillStyle = "#62a205";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(grass, 0,0,canvas.width,canvas.height);
 }
 
-function drawSnake() {
-    ctx.fillStyle = "#fff500";
+function drawSnake () {
+    ctx.fillStyle = '#2e312d';
     for (let index = 0; index < snakeParts.length; index++) {
         let part = snakeParts[index];
-        ctx.fillRect(
-            part.x * tileCount,
-            part.y * tileCount,
-            tileSize,
-            tileSize
-        );
+        ctx.drawImage(snakeBody,part.x * tileCount, part.y * tileCount, tileSize, tileSize)
     }
     snakeParts.push(new SnakePart(headX, headY));
     if (snakeParts.length > tailSize) {
         snakeParts.shift();
     }
-    ctx.fillStyle = "#2e312d";
-    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
+    ctx.drawImage(snakeHead,headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
 
 function spawn_apple() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+    // ctx.fillStyle = 'red';
+    // ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+    ctx.drawImage(bebe,appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
 function apple_collision() {
     for (let index = 0; index < snakeParts.length; index++) {
         let part = snakeParts[index];
         if (part.x === appleX && part.y === appleY) {
-            appleX = Math.floor(Math.random() * tileCount);
-            appleY = Math.floor(Math.random() * tileCount);
+            appleX = Math.floor(Math.random() * (tileCount/2));
+            appleY = Math.floor(Math.random() * (tileCount/2));
+
         }
     }
     if (appleX === headX && appleY === headY) {
-        appleX = Math.floor(Math.random() * tileCount);
-        appleY = Math.floor(Math.random() * tileCount);
+        appleX = Math.floor(Math.random() * (tileCount/2));
+        appleY = Math.floor(Math.random() * (tileCount/2));
         tailSize++;
         score++;
-        speed = 3 * (1 + score / 5);
+        speed = 3 * (1 + score/5);
+        eat.play();
         console.log(speed);
     }
 }
@@ -143,6 +147,7 @@ function draw_score() {
 async function isGameOver() {
     let gameOver = false;
     if (directionX === 0 && directionY === 0) {
+        setTimeout(playMusic, 1000/speed);
         return false;
     }
     for (let index = 0; index < snakeParts.length; index++) {
@@ -152,7 +157,7 @@ async function isGameOver() {
             break;
         }
     }
-    if (headX < 0 || headX === tileCount || headY < 0 || headY === tileCount) {
+    if (headX < 0 || headX === tileCount/2 || headY < 0 || headY === tileCount/2) {
         gameOver = true;
         if (username !== "") {
             let response
@@ -171,11 +176,19 @@ async function isGameOver() {
     return gameOver;
 }
 
+async function playMusic() {
+    await music.play();
+    setInterval(playMusic, 164000);
+}
+
+
 async function initGame() {
-    document.addEventListener("keydown", keydown);
+    document.addEventListener('keydown', keydown);
     await move_snake();
     if (await isGameOver()) {
         ctx.fillStyle = "#ffffff";
+        deathSound.play();
+        ctx.fillStyle = '#ffffff';
         ctx.font = "60px Impact, sans serif";
         ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
 
