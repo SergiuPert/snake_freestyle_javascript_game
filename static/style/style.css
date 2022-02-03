@@ -14,7 +14,7 @@ canvas {
     /*box-shadow: -10px -10px 8px black;*/
 }
 
-#overlap_div{
+#overlap_div {
     position: absolute;
     display: flex;
     align-content: center;
@@ -25,17 +25,18 @@ canvas {
     right: 0;
     bottom: 0;
     z-index: 2;
-    background-color: rgba(0,0,0,0.50);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-#overlap_div table{
+#overlap_div table {
     margin-top: 200px;
     border: 3px solid black;
     border-collapse: collapse;
     background-color: darkgray;
 }
 
-#overlap_div table tr th,td{
+#overlap_div table tr th,
+td {
     border: 1px solid black;
     border-collapse: collapse;
     color: black;
@@ -43,11 +44,11 @@ canvas {
     padding: 10px;
 }
 
-#overlap_div table tr{
+#overlap_div table tr {
     margin-top: 200px;
 }
 
-.navigation-bar{
+.navigation-bar {
     position: fixed;
     top: 0;
     left: -130px;
@@ -55,15 +56,14 @@ canvas {
     padding-right: 10px;
 }
 
-.navigation-bar:hover{
+.navigation-bar:hover {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
 }
 
-
-.navigation-main-div{
+.navigation-main-div {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -75,31 +75,31 @@ canvas {
 }
 
 .navigation-button {
-	box-shadow: 0 0 10px 3px #3dc21b;
-	background-color:#44c767;
-	border-radius:28px;
-	border:1px solid #18ab29;
-	display:block;
-	cursor:pointer;
-	color:#ffffff;
+    box-shadow: 0 0 10px 3px #3dc21b;
+    background-color: #44c767;
+    border-radius: 28px;
+    border: 1px solid #18ab29;
+    display: block;
+    cursor: pointer;
+    color: #ffffff;
     text-align: center;
     font-family: Impact, sans-serif;
-	font-size:17px;
+    font-size: 17px;
     width: 70px;
-	padding:16px;
+    padding: 16px;
     margin: 20px;
-	text-decoration:none;
-	text-shadow:0 1px 0 #2f6627;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #2f6627;
 }
 .navigation-button:hover {
-	background-color:#5cbf2a;
+    background-color: #5cbf2a;
 }
 .navigation-button:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
 
-.login-button{
+.login-button {
     position: relative;
     display: block;
     margin-bottom: 40px;
