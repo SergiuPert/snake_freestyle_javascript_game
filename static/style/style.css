@@ -97,5 +97,11 @@ body {
 }
 
 .card-container{
+    margin-top: 200px;
+}
 
+.login-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
