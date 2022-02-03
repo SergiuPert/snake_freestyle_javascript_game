@@ -140,8 +140,8 @@ function apple_collision() {
 
 function draw_score() {
     ctx.fillStyle = "#ffffff";
-    ctx.font = "20px Impact, sans serif";
-    ctx.fillText("Score " + score, canvas.width - 80, 20);
+    ctx.font = "40px Impact, sans serif";
+    ctx.fillText("Score " + score, canvas.width - 140, 40);
 }
 
 async function isGameOver() {
@@ -187,9 +187,9 @@ async function initGame() {
     await move_snake();
     if (await isGameOver()) {
         ctx.fillStyle = "#ffffff";
-        deathSound.play();
+        await deathSound.play();
         ctx.fillStyle = '#ffffff';
-        ctx.font = "60px Impact, sans serif";
+        ctx.font = "120px Impact, sans serif";
         ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
 
         return;

@@ -24,18 +24,6 @@
             src="{{ url_for('static',filename='script/game.js') }}"
             defer
         ></script>
-        {#
-        <script
-            type="module"
-            src="{{ url_for('static', filename='script/navigation.mjs')}}"
-        ></script>
-        #} {#
-        <script
-            type="module"
-            src="{{ url_for('static',filename='script/game.mjs') }}"
-            defer
-        ></script>
-        #}
     </head>
     <body>
         <div id="overlap_div"></div>
@@ -46,7 +34,7 @@
                         class="navigation-button"
                         href="{{ url_for('main_page') }}"
                     >
-                        Home
+                        Restart
                     </a>
                     <a id="overlap-highscore" class="navigation-button">
                         Highscore
