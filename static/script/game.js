@@ -1,35 +1,33 @@
-import {apiGet, apiPost, apiPut} from "./APIs.js";
+import { apiGet, apiPost, apiPut } from "./APIs.js";
 
 const canvas = document.getElementById("game-screen");
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext("2d");
 let speed = 3;
 let tileCount = 20;
-let tileSize = canvas.width/tileCount;
+let tileSize = canvas.width / tileCount;
 let headX = 10;
 let headY = 10;
 let directionX = 0;
-let directionY =0;
+let directionY = 0;
 let score = 0;
 let username;
 
 async function initiate_user() {
-    await apiGet("/API-get-active-user")
-            .then(result => {
-                username = result.username;
-            });
-
+    let result = await apiGet("/API-get-active-user");
+    username = result.username;
 }
 
 // export function activate_keydown(){
 //     document.addEventListener('keydown',ev => keydown(ev))
 // }
 
-
 // let insertHighscoreButton = document.getElementById("insert_highscore")
 // insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
 function insertHighscore() {
-    let new_score = {"highscore": score, "username": username}
-    apiPut("/API-insert-highscore", new_score).then(r => console.log("Highscore changed!"));
+    let new_score = { highscore: score, username: username };
+    apiPut("/API-insert-highscore", new_score).then((r) =>
+        console.log("Highscore changed!")
+    );
 }
 
 let appleX = 5;
@@ -37,42 +35,41 @@ let appleY = 5;
 let snakeParts = [];
 let tailSize = 2;
 
-class SnakePart{
+class SnakePart {
     constructor(x, y) {
         this.x = x;
         this.y = y;
     }
 }
 
-
 async function keydown(event) {
     if (event.keyCode === 87 && directionY !== 1) {
         directionY = -1;
         directionX = 0;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 83 && directionY !== -1) {
         directionY = 1;
         directionX = 0;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 68 && directionX !== -1) {
         directionY = 0;
         directionX = 1;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 65 && directionX !== 1) {
         directionY = 0;
         directionX = -1;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 32) {
         directionX = 0;
         directionY = 0;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 27) {
         let overlapDiv = document.getElementById("overlap_div");
-        overlapDiv.style.visibility="hidden";
+        overlapDiv.style.visibility = "hidden";
         overlapDiv.innerHTML = "";
-        document.removeEventListener('keydown', keydown);
-        await initGame()
-    } else if(event.keyCode === 82) {
+        document.removeEventListener("keydown", keydown);
+        await initGame();
+    } else if (event.keyCode === 82) {
         appleX = 5;
         appleY = 5;
         snakeParts = [];
@@ -83,7 +80,6 @@ async function keydown(event) {
         directionY = 0;
         score = 0;
     }
-
 }
 
 function move_snake() {
@@ -92,36 +88,40 @@ function move_snake() {
 }
 
 function clear_screen() {
-    ctx.fillStyle = '#62a205';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#62a205";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function drawSnake () {
-    ctx.fillStyle = '#fff500';
+function drawSnake() {
+    ctx.fillStyle = "#fff500";
     for (let index = 0; index < snakeParts.length; index++) {
         let part = snakeParts[index];
-        ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize)
+        ctx.fillRect(
+            part.x * tileCount,
+            part.y * tileCount,
+            tileSize,
+            tileSize
+        );
     }
     snakeParts.push(new SnakePart(headX, headY));
     if (snakeParts.length > tailSize) {
         snakeParts.shift();
     }
-    ctx.fillStyle = '#2e312d';
+    ctx.fillStyle = "#2e312d";
     ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
 
 function spawn_apple() {
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = "red";
     ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
 function apple_collision() {
     for (let index = 0; index < snakeParts.length; index++) {
-        let part = snakeParts[index]
+        let part = snakeParts[index];
         if (part.x === appleX && part.y === appleY) {
             appleX = Math.floor(Math.random() * tileCount);
             appleY = Math.floor(Math.random() * tileCount);
-
         }
     }
     if (appleX === headX && appleY === headY) {
@@ -129,13 +129,13 @@ function apple_collision() {
         appleY = Math.floor(Math.random() * tileCount);
         tailSize++;
         score++;
-        speed = 3 * (1 + score/5);
+        speed = 3 * (1 + score / 5);
         console.log(speed);
     }
 }
 
 function draw_score() {
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = "#ffffff";
     ctx.font = "20px Impact, sans serif";
     ctx.fillText("Score " + score, canvas.width - 80, 20);
 }
@@ -145,7 +145,7 @@ function isGameOver() {
     if (directionX === 0 && directionY === 0) {
         return false;
     }
-    for (let index = 0; index <snakeParts.length; index++) {
+    for (let index = 0; index < snakeParts.length; index++) {
         let part = snakeParts[index];
         if (part.x === headX && part.y === headY) {
             gameOver = true;
@@ -158,24 +158,22 @@ function isGameOver() {
     return gameOver;
 }
 
-
 async function initGame() {
-        document.addEventListener('keydown', keydown);
-        await move_snake();
-        if (isGameOver()) {
-            ctx.fillStyle = '#ffffff';
-            ctx.font = "60px Impact, sans serif";
-            ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
-            return;
-        }
-        clear_screen();
-        apple_collision();
-        spawn_apple();
-        drawSnake();
-        draw_score();
-        setTimeout(initGame, 1000 / speed);
-
+    document.addEventListener("keydown", keydown);
+    await move_snake();
+    if (isGameOver()) {
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "60px Impact, sans serif";
+        ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
+        return;
+    }
+    clear_screen();
+    apple_collision();
+    spawn_apple();
+    drawSnake();
+    draw_score();
+    setTimeout(initGame, 1000 / speed);
 }
 
-await initiate_user()
+await initiate_user();
 await initGame();

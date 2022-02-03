@@ -33,7 +33,7 @@ def insert_user(cursor, username, password):
 
 
 @database_connection.connection_handler
-def insert_highscore(cursor,user):
+def insert_highscore(cursor, user):
     query = """
                     UPDATE users
                     SET highscore = %(highscore)s
