@@ -79,6 +79,12 @@ def api_insert_highscore():
     json_var = request.json
     print(json_var)
     database_manager.insert_highscore(json_var)
+    return {"result": True}
+
+@app.route("/API-get-active-user-highscore")
+@json_response
+def api_get_user_highscore():
+    return database_manager.get_user_highscore(session["username"])
 
 
 if __name__ == "__main__":
