@@ -6,10 +6,8 @@
     <!-- http://proger.i-forge.net/The_smallest_transparent_pixel/ -->
     <link rel="icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=">
     <link rel="stylesheet" href="/static/style/style.css">
-    <script type="module" src="/static/script/navigation.js"></script>
+    <script type="module" src="{{ url_for('static', filename='script/navigation.js')}}"></script>
     <script type="module" src="{{ url_for('static',filename='script/game.js') }}" defer></script>
-    <script type="module" src="{{ url_for('static', filename='script/navigation.mjs')}}"></script>
-    <script type="module" src="{{ url_for('static',filename='script/game.mjs') }}" defer></script>
 </head>
 <body>
     <div id="overlap_div" ></div>
@@ -41,7 +39,7 @@
         </nav>
     </header>
     <h1 class="tit">Snake</h1>
-    <canvas class="game-screen" id="game-screen" width="400" height="400"></canvas>
+    <canvas class="game-screen" id="game-screen" width="800" height="800"></canvas>
 
 </body>
 </html>
