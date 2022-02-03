@@ -1,4 +1,4 @@
-import {apiGet, apiPost, apiPut} from "./APIs.js";
+// import { apiGet, apiPost, apiPut } from "./APIs.js";
 
 const canvas = document.getElementById("game-screen");
 const ctx = canvas.getContext('2d');
@@ -20,53 +20,73 @@ let tileSize = canvas.width/(tileCount/2);
 let headX = 10;
 let headY = 10;
 let directionX = 0;
-let directionY =0;
+let directionY = 0;
 let score = 0;
 let username;
-apiGet("/API-get-active-user")
-    .then(result => {username= result.username});
 
-let insertHighscoreButton = document.getElementById("insert_highscore")
-insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
-function insertHighscore(score) {
-    let new_score = {"highscore": score, "username": username}
-    apiPut("/API-insert-highscore", new_score).then(r => console.log("Highscore changed!"));
+async function initiate_user() {
+    let result = await apiGet("/API-get-active-user");
+    username = result.username;
+}
+
+// export function activate_keydown(){
+//     document.addEventListener('keydown',ev => keydown(ev))
+// }
+
+// let insertHighscoreButton = document.getElementById("insert_highscore")
+// insertHighscoreButton.addEventListener('click', ev => insertHighscore(350))
+function insertHighscore() {
+    let new_score = { highscore: score, username: username };
+    apiPut("/API-insert-highscore", new_score).then((r) =>
+        console.log("Highscore changed!")
+    );
 }
 
 let appleX = 5;
 let appleY = 5;
-const snakeParts = [];
+let snakeParts = [];
 let tailSize = 2;
 
-class SnakePart{
+class SnakePart {
     constructor(x, y) {
         this.x = x;
         this.y = y;
     }
 }
 
-function keydown(event) {
+async function keydown(event) {
     if (event.keyCode === 87 && directionY !== 1) {
         directionY = -1;
         directionX = 0;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 83 && directionY !== -1) {
         directionY = 1;
         directionX = 0;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 68 && directionX !== -1) {
         directionY = 0;
         directionX = 1;
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
     } else if (event.keyCode === 65 && directionX !== 1) {
         directionY = 0;
         directionX = -1;
         document.removeEventListener('keydown', keydown);
     } else if (event.keyCode === 27) {
         let overlapDiv = document.getElementById("overlap_div");
-        overlapDiv.style.visibility="hidden";
+        overlapDiv.style.visibility = "hidden";
         overlapDiv.innerHTML = "";
-        document.removeEventListener('keydown', keydown);
+        document.removeEventListener("keydown", keydown);
+        await initGame();
+    } else if (event.keyCode === 82) {
+        appleX = 5;
+        appleY = 5;
+        snakeParts = [];
+        tailSize = 2;
+        headX = 10;
+        headY = 10;
+        directionX = 0;
+        directionY = 0;
+        score = 0;
     }
 }
 
@@ -100,7 +120,7 @@ function spawn_apple() {
 
 function apple_collision() {
     for (let index = 0; index < snakeParts.length; index++) {
-        let part = snakeParts[index]
+        let part = snakeParts[index];
         if (part.x === appleX && part.y === appleY) {
             appleX = Math.floor(Math.random() * (tileCount/2));
             appleY = Math.floor(Math.random() * (tileCount/2));
@@ -119,7 +139,7 @@ function apple_collision() {
 }
 
 function draw_score() {
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = "#ffffff";
     ctx.font = "20px Impact, sans serif";
     ctx.fillText("Score " + score, canvas.width - 80, 20);
 }
@@ -130,7 +150,7 @@ function isGameOver() {
         setTimeout(playMusic, 1000/speed);
         return false;
     }
-    for (let index = 0; index <snakeParts.length; index++) {
+    for (let index = 0; index < snakeParts.length; index++) {
         let part = snakeParts[index];
         if (part.x === headX && part.y === headY) {
             gameOver = true;
@@ -149,14 +169,15 @@ async function playMusic() {
 }
 
 
-function initGame() {
+async function initGame() {
     document.addEventListener('keydown', keydown);
-    move_snake();
+    await move_snake();
     if (isGameOver()) {
+        ctx.fillStyle = "#ffffff";
         deathSound.play();
         ctx.fillStyle = '#ffffff';
         ctx.font = "60px Impact, sans serif";
-        ctx.fillText("Game Over!", canvas.width/6, canvas.height/2);
+        ctx.fillText("Game Over!", canvas.width / 6, canvas.height / 2);
         return;
     }
     clear_screen();
@@ -164,8 +185,8 @@ function initGame() {
     spawn_apple();
     drawSnake();
     draw_score();
-    setTimeout(initGame, 1000/speed);
+    setTimeout(initGame, 1000 / speed);
 }
 
-
+initiate_user();
 initGame();

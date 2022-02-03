@@ -1,55 +1,50 @@
-export async function apiGet(url) {
-    let response = await fetch(url, {
-        method: "GET",
-    })
-    if (response.status === 200) {
-        let data = response.json()
-        return data
+async function apiGet(url) {
+    let response = await fetch(url);
+    if (response.ok) {
+        let data = await response.json();
+        return data;
     }
 }
 
-
-export async function apiPost(url, payload) {
+async function apiPost(url, payload) {
     let response = await fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
-    })
+        body: JSON.stringify(payload),
+    });
     if (response.ok) {
-        let data = response.json()
+        let data = await response.json();
         // console.log(data)
-        return data
+        return data;
     }
 }
 
-
-export async function apiDelete(url, payload) {
+async function apiDelete(url, payload) {
     let response = await fetch(url, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
-    })
+        body: JSON.stringify(payload),
+    });
     if (response.ok) {
-        let data = response.json()
-        return data
+        let data = await response.json();
+        return data;
     }
 }
 
-
-export async function apiPut(url, payload) {
+async function apiPut(url, payload) {
     let response = await fetch(url, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
-    })
+        body: JSON.stringify(payload),
+    });
     if (response.ok) {
-        let data = response.json()
-        return data
+        let data = await response.json();
+        return data;
     }
 }
